@@ -54,7 +54,6 @@ export const GithubProvider = ({ children }) => {
         type: 'GET_USER',
         payload: data,
       })
-      console.log(data)
     }
   }
   const clearUsers = () => dispatch({ type: 'CLEAR_USERS' })
