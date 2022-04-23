@@ -10,6 +10,7 @@ export const GithubProvider = ({ children }) => {
   const initialState = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
   }
 
@@ -60,14 +61,33 @@ export const GithubProvider = ({ children }) => {
 
   const setLoading = () => dispatch({ type: 'SET_LOADING' })
 
+  // Get user repos
+  const getUserRepos = async (login) => {
+    const response = await fetch(`${GITHUB_URL}/users/${login}/repos`, {
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+      },
+    })
+    const data = await response.json()
+
+    if (data.length !== 0) {
+      dispatch({
+        type: 'GET_REPOS',
+        payload: data,
+      })
+    }
+  }
+
   return (
     <GithubContext.Provider
       value={{
         users: state.users,
         user: state.user,
         loading: state.loading,
+        repos: state.repos,
         searchUsers,
         getUser,
+        getUserRepos,
         clearUsers,
       }}
     >
